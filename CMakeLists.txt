@@ -6,4 +6,8 @@ set(CMAKE_C_STANDARD 11)
 add_executable(SimpleTurnServer main.c
         Infrastructure/udp.c
         Infrastructure/queue.c
-        Infrastructure/queue.h)
+        Infrastructure/queue.h
+        Components/NetworkMainLoop.c
+        Components/NetworkMainLoop.h
+        Infrastructure/packet.h
+        Infrastructure/packet.c)

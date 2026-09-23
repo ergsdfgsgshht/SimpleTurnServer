@@ -2,19 +2,8 @@
 // Created by shadowleaves on 2026/9/23.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "queue.h"
 
-#define MAXSIZE 100
-
-typedef int Elemtype;
-
-typedef struct Queue {
-    Elemtype data[MAXSIZE];
-    int front;
-    int rear;
-    int element_number;
-} Queue;
 
 Queue* initQueue(){
     Queue* queue = (Queue*)malloc(sizeof(Queue));
@@ -44,8 +33,8 @@ void push(Queue* queue, Elemtype e){
 
 Elemtype pop(Queue* queue){
     if (queue->element_number == 0){
-        printf("The queu is empty!");
-        return 0;
+        printf("The queue is empty!");
+        return (Elemtype){0};
     }
     if (queue->front == MAXSIZE-1){
         Elemtype temp = queue->data[queue->front];
