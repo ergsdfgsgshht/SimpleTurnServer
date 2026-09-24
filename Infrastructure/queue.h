@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include "packet.h"
 
 #define MAXSIZE 1024
@@ -17,6 +18,7 @@ typedef struct Queue {
     int front;
     int rear;
     int element_number;
+    pthread_mutex_t lock;
 } Queue;
 
 Queue* initQueue();

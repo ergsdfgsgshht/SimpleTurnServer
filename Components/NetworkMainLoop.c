@@ -8,6 +8,7 @@
 
 
 void* recvloop(void* arg) {
+    server_config* config = (server_config*)arg;
     Queue* recv_messages_stun = initQueue();
     Queue* recv_messages_register = initQueue();
     Queue* recv_messages_post = initQueue();
@@ -16,7 +17,7 @@ void* recvloop(void* arg) {
     Queue* send_messages = initQueue();
 
     int mainsock = createUDPsocket();
-    struct sockaddr* self = construct_server_address("103.207.68.106",5140);
+    struct sockaddr* self = construct_server_address(config->ip, config->port);
     socklen_t addrlen = sizeof(struct sockaddr);
     if (bind(mainsock,self,sizeof(struct sockaddr)) == -1) {
         perror("Error:Cannot bind to self");

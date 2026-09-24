@@ -3,6 +3,8 @@ project(SimpleTurnServer C)
 
 set(CMAKE_C_STANDARD 11)
 
+find_package(Threads REQUIRED)
+
 add_executable(SimpleTurnServer main.c
         Infrastructure/udp.c
         Infrastructure/queue.c
@@ -10,4 +12,8 @@ add_executable(SimpleTurnServer main.c
         Components/NetworkMainLoop.c
         Components/NetworkMainLoop.h
         Infrastructure/packet.h
-        Infrastructure/packet.c)
+        Infrastructure/packet.c
+        Components/Stunloop.c
+        Components/Stunloop.h)
+
+target_link_libraries(SimpleTurnServer Threads::Threads)

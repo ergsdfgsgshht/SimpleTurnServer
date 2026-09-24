@@ -15,4 +15,10 @@
 void* recvloop(void* arg);
 void* sendloop(void* arg);
 
+//服务器启动参数,由main函数解析命令行后传入recvloop
+typedef struct server_config {
+    const char* ip;
+    uint16_t port;
+} server_config;
+
 #endif //SIMPLETURNSERVER_NETWORKMAINLOOP_H
