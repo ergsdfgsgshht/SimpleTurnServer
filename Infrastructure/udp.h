@@ -16,5 +16,5 @@ int createUDPsocket();
 struct sockaddr* construct_server_address(const char* ip_str, uint16_t port);
 
 //输入sock,要发送的字符串(及其长度),以及服务器地址结构体
-ssize_t udpsend(int sock, const void* buf, size_t len, const struct sockaddr* serveraddr);
+ssize_t udpsend(int sock, const void* buf, size_t len, const struct sockaddr* target_addr);
 

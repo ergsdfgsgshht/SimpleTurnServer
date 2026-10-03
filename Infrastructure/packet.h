@@ -18,11 +18,15 @@ typedef enum PacketType PacketType;
 struct packet {
     PacketType type; //应用层识别哪种枚举类型的包,以便分配给不同的线程处理
     struct sockaddr sockaddress;  //记录客户端地址,便于发送回去
-    uint8_t length;  //记录数据长度
+    uint16_t length;  //记录数据长度
     char* data;    //指向应用层包文具体数据,处理线程接受到后应当及时释放
 };
 typedef struct packet packet;
 
-uint8_t getlength();
+//获取网络中得到的包的data长度
+uint16_t getlength();
+
+//将应用层中的包的data长度表达转化为网络中包的data长度
+char* constructlength();
 
 #endif //SIMPLETURNSERVER_PACKET_H

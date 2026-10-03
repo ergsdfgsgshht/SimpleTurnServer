@@ -14,7 +14,7 @@ Queue* initQueue(){
     return queue;
 }
 
-void push(Queue* queue, Elemtype e){
+int push(Queue* queue, Elemtype e){
     pthread_mutex_lock(&queue->lock);
     if (queue->element_number < MAXSIZE){
         queue->data[queue->rear] = e;
@@ -22,16 +22,16 @@ void push(Queue* queue, Elemtype e){
         if (queue->front == MAXSIZE-1){
             queue->rear = 0;
             pthread_mutex_unlock(&queue->lock);
-            return;
+            return 0;
         }else{
             queue->rear += 1;
             pthread_mutex_unlock(&queue->lock);
-            return;
+            return 0;
         }
     }else{
         printf("The queue is already full!");
         pthread_mutex_unlock(&queue->lock);
-        return;
+        return -1;
     }
 
 }
@@ -39,9 +39,10 @@ void push(Queue* queue, Elemtype e){
 Elemtype pop(Queue* queue){
     pthread_mutex_lock(&queue->lock);
     if (queue->element_number == 0){
-        printf("The queue is empty!");
         pthread_mutex_unlock(&queue->lock);
-        return (Elemtype){0};
+        packet pack;
+        pack.type = 127;
+        return pack;
     }
     if (queue->front == MAXSIZE-1){
         Elemtype temp = queue->data[queue->front];

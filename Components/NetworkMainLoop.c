@@ -4,19 +4,24 @@
 
 #include "NetworkMainLoop.h"
 
-
-
+//全局消息队列,由recvloop初始化,供各处理线程读写
+Queue* recv_messages_stun = NULL;
+Queue* recv_messages_register = NULL;
+Queue* recv_messages_post = NULL;
+Queue* recv_messages_inform = NULL;
+Queue* send_messages = NULL;
+int mainsock = 0;
 
 void* recvloop(void* arg) {
     server_config* config = (server_config*)arg;
-    Queue* recv_messages_stun = initQueue();
-    Queue* recv_messages_register = initQueue();
-    Queue* recv_messages_post = initQueue();
-    Queue* recv_messages_inform = initQueue();
+    recv_messages_stun = initQueue();
+    recv_messages_register = initQueue();
+    recv_messages_post = initQueue();
+    recv_messages_inform = initQueue();
+    send_messages = initQueue();
 
-    Queue* send_messages = initQueue();
+    mainsock = createUDPsocket();
 
-    int mainsock = createUDPsocket();
     struct sockaddr* self = construct_server_address(config->ip, config->port);
     socklen_t addrlen = sizeof(struct sockaddr);
     if (bind(mainsock,self,sizeof(struct sockaddr)) == -1) {
@@ -70,5 +75,34 @@ void* sendloop(void* arg) {
     };
     thrd_sleep(&duration,NULL);
     printf("Send loop started\n");
+    bool is_running = true;
+    while (is_running) {
+
+        packet temp = pop(send_messages);  //取出要发送的信息
+        if (temp.type == 127) {
+            continue;
+        }
+
+        char* message;
+        struct sockaddr target_address;  //初始化构建udp包体需要填入的两个参数
+
+        uint16_t total_length = temp.length+3;
+        message = malloc(total_length);     //初始化网络包体应用层结构
+
+        memcpy(message,&temp.type,1);  //填充包的首位:type
+
+        uint16_t net_length = htons(temp.length);
+        memcpy(message+1,&net_length,2);  //填充包的第1,2字节
+
+        memcpy(message+3,temp.data,temp.length);  //填充包的data字段
+
+        target_address = temp.sockaddress; //获取目标ip
+
+        udpsend(mainsock,message,temp.length+3,&target_address); //发送数据
+
+        free(temp.data);
+        free(message);    //释放内存
+
+    }
     return NULL;
 }

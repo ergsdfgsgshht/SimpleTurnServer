@@ -18,8 +18,8 @@ struct sockaddr* construct_server_address(const char* ip_str, uint16_t port){
     return (struct sockaddr*)&serveraddr;
 }
 
-ssize_t udpsend(int sock, const void* buf, size_t len, const struct sockaddr* serveraddr){
-    ssize_t result = sendto(sock, buf, len, 0, serveraddr, sizeof(struct sockaddr_in));
+ssize_t udpsend(int sock, const void* buf, size_t len, const struct sockaddr* target_addr){
+    ssize_t result = sendto(sock, buf, len, 0, target_addr, sizeof(struct sockaddr_in));
     if (result == -1){
         perror("fail to sendto");
         return -1;

@@ -23,7 +23,7 @@ typedef struct Queue {
 
 Queue* initQueue();
 
-void push(Queue* queue, Elemtype e);
+int push(Queue* queue, Elemtype e);
 
 Elemtype pop(Queue* queue);
 

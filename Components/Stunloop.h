@@ -8,12 +8,13 @@
 #include "../Infrastructure/udp.h"
 #include "../Infrastructure/queue.h"
 #include "../Infrastructure/packet.h"
+#include "NetworkMainLoop.h"
 #include <stdbool.h>
 #include <pthread.h>
 #include <threads.h>
 
-void* stunloop(void* args) {
+void* stunloop(void* args);
 
-}
+
 
 #endif //SIMPLETURNSERVER_STUNLOOP_H
